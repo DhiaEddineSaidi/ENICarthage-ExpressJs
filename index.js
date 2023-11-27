@@ -24,7 +24,7 @@ app.use(cors())
 app.use(express.json())
 
 
-  app.route('/persons')
+  app.route('/users')
     .get((req, res)=> {
       db.collection('person').find().toArray().then(results=>{
         console.log(results);
@@ -33,7 +33,7 @@ app.use(express.json())
       })
     })
 
-    app.route('/person')
+    app.route('/users')
     .post((req, res) => {
       console.log(req.body);
       db.collection('person').insertOne(req.body);
@@ -41,13 +41,13 @@ app.use(express.json())
       res.status(201).json(req.body)
     })
 
-    app.route('/person/:_id')
+    app.route('/users/:_id')
     .get((req, res) => {
       console.log(req.params);
-      db.collection('person').find(req.params).toArray().then(results => {
-        console.log(results);
+      db.collection('person').findOne({_id: parseInt(req.params._id) }).then(result => {
+        console.log(result);
         res.contentType('application/json');
-        res.status(200).json(JSON.stringify(results))
+        res.status(200).json(result)
       })
     })
     // .put((req, res) => {
